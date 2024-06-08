@@ -7,7 +7,7 @@ edition = "2021"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-axum = { version = "0.7", optional = true }
+axum = { version = "0.7", features = ["macros"], optional = true }
 console_error_panic_hook = "0.1"
 leptos = { version = "0.6", features = ["nightly"] }
 leptos_axum = { version = "0.6", optional = true }
@@ -20,6 +20,10 @@ wasm-bindgen = "=0.2.92"
 thiserror = "1"
 tracing = { version = "0.1", optional = true }
 http = "1"
+serde = { version = "1.0", features = ["derive"] }
+scylla = { version = "0.13", optional = true }
+uuid = { version = "1", features = ["v4", "serde"] }
+bcrypt = { version = "0.15", features = [], optional = true }
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
@@ -33,6 +37,8 @@ ssr = [
   "leptos_meta/ssr",
   "leptos_router/ssr",
   "dep:tracing",
+  "dep:scylla",
+  "dep:bcrypt",
 ]
 
 # Defines a size-optimized profile for the WASM bundle in release mode

@@ -3,3 +3,4 @@ tab_spaces = 2
 indentation_style = "Auto"
 newline_style = "Auto"
 attr_value_brace_style = "WhenRequired"
+version = "Two"
