@@ -4,10 +4,10 @@ use leptos::*;
 pub async fn register_user(username: String, password: String) -> Result<(), ServerFnError> {
   use crate::entities::user::User;
   use crate::state::session;
-  use bcrypt::{hash, DEFAULT_COST};
+  use bcrypt::hash;
   use uuid::Uuid;
 
-  let hashed_password = hash(password, DEFAULT_COST).unwrap();
+  let hashed_password = hash(password, 7).unwrap();
   let user = User {
     id: Uuid::new_v4(),
     username,
