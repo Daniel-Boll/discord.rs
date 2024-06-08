@@ -25,7 +25,7 @@ pub fn App() -> impl IntoView {
           outside_errors.insert_with_default_key(AppError::NotFound);
           view! { <ErrorTemplate outside_errors/> }.into_view()
       }>
-          <main class="flex flex-col w-full h-dvh justify-center items-center bg-zinc-950 text-zinc-50">
+          <main class="flex flex-col w-full h-dvh bg-zinc-700 text-zinc-50">
               <Routes>
                   <Route path="" view=HomePage/>
               </Routes>
@@ -37,18 +37,28 @@ pub fn App() -> impl IntoView {
 /// Renders the home page of your application.
 #[component]
 fn HomePage() -> impl IntoView {
-  // Creates a reactive value to update the button
-  let (count, set_count) = create_signal(0);
-  let on_click = move |_| set_count.update(|count| *count += 1);
+  view! { <GuildsSidebar/> }
+}
 
+#[component]
+fn GuildsSidebar() -> impl IntoView {
   view! {
-      <h1>"Welcome to Leptos!"</h1>
-      <button
-          on:click=on_click
-          class="bg-orange-600 hover:bg-orange-700 px-5 py-3 text-white rounded-lg"
-      >
-          "Click Me: "
-          {count}
-      </button>
+      <aside class="flex flex-col w-20 h-full bg-zinc-950 border-r border-zinc-900 px-4 py-2 gap-2">
+          <button class="flex items-center justify-center w-full h-12 p-2 rounded-[50px] bg-zinc-700 text-zinc-50 hover:rounded-lg hover:bg-orange-500 transition-all duration-300 ease-out">
+              <img
+                  src="/assets/discord-mark-white.svg"
+                  alt="Add a server"
+                  class="self-center w-8 h-8"
+              />
+          </button>
+
+          <hr class="border-zinc-700"/>
+
+          <div class="flex w-full items-center justify-between">
+              <button class="w-full h-12 p-2 rounded-[50px] bg-zinc-700 text-zinc-50 hover:rounded-lg hover:bg-orange-500 transition-all duration-300 ease-out text-2xl">
+                  +
+              </button>
+          </div>
+      </aside>
   }
 }
