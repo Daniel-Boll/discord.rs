@@ -1,0 +1,5 @@
+{
+  "rust-analyzer.rust.analyzerTargetDir": true,
+  "rust-analyzer.rustfmt.overrideCommand": ["leptosfmt", "--stdin", "--rustfmt"],
+  "rust-analyzer.procMacro.ignored": { "leptos_macro": [ "component", "server" ] }
+}

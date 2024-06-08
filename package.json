@@ -1,0 +1,16 @@
+{
+  "name": "discord-rs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "pnpx tailwindcss -i ./input.css -o ./style/output.css",
+    "watch": "pnpx tailwindcss -i ./input.css -o ./style/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
+  }
+}
