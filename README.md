@@ -1,13 +1,8 @@
-<picture>
-    <source srcset="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_Solid_White.svg" media="(prefers-color-scheme: dark)">
-    <img src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg" alt="Leptos Logo">
-</picture>
+<h1 align="center">🦀 Discord.rs</h1>
 
-# discord.rs
+<img align="left" width=48 src="https://raw.githubusercontent.com/daniel-boll/discord.rs/main/public/favicon.ico" alt="Discord.rs Logo">
 
-**discord.rs** is a real-time chat application project inspired by Discord, developed in Rust.
-
-## Overview
+> **discord.rs** is a real-time chat application project inspired by Discord, developed in Rust.
 
 This project aims to create a robust and scalable chat application with basic features similar to those found in chat platforms like Discord.
 
