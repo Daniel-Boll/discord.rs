@@ -1,11 +1,16 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
+  use axum::body::Body;
+  use axum::extract::{Path, Request, State};
+  use axum::response::{IntoResponse, Response};
+  use axum::routing::get;
   use axum::Router;
-  use discord_rs::app::*;
+  use discord_rs::entities::db::create_session;
   use discord_rs::fileserv::file_and_error_handler;
+  use discord_rs::{app::*, state::AppState};
   use leptos::*;
-  use leptos_axum::{generate_route_list, LeptosRoutes};
+  use leptos_axum::{generate_route_list, handle_server_fns_with_context, LeptosRoutes};
 
   // Setting get_configuration(None) means we'll be using cargo-leptos's env values
   // For deployment these variables are:
@@ -17,11 +22,52 @@ async fn main() {
   let addr = leptos_options.site_addr;
   let routes = generate_route_list(App);
 
+  async fn leptos_routes_handler(
+    State(app_state): State<AppState>,
+    req: Request<Body>,
+  ) -> Response {
+    let handler = leptos_axum::render_route_with_context(
+      app_state.leptos_options.clone(),
+      app_state.routes.clone(),
+      move || {
+        provide_context(app_state.session.clone());
+      },
+      App,
+    );
+    handler(req).await.into_response()
+  }
+
+  async fn server_fn_handler(
+    State(app_state): State<AppState>,
+    path: Path<String>,
+    request: Request<Body>,
+  ) -> impl IntoResponse {
+    logging::debug_warn!("Server fn handler: /api/{path}", path = path.as_str());
+
+    handle_server_fns_with_context(
+      move || {
+        provide_context(app_state.session.clone());
+      },
+      request,
+    )
+    .await
+  }
+
+  let app_state = AppState {
+    leptos_options,
+    session: create_session().await.expect("Failed to create session"),
+    routes: routes.clone(),
+  };
+
   // build our application with a route
   let app = Router::new()
-    .leptos_routes(&leptos_options, routes, App)
+    .route(
+      "/api/*fn_name",
+      get(server_fn_handler).post(server_fn_handler),
+    )
+    .leptos_routes_with_handler(routes, get(leptos_routes_handler))
     .fallback(file_and_error_handler)
-    .with_state(leptos_options);
+    .with_state(app_state);
 
   let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
   logging::log!("listening on http://{}", &addr);
